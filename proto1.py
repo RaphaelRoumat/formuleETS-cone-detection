@@ -137,7 +137,6 @@ def main(img):
     cv2.imshow("Blue result", blue_result)
     cv2.imshow("Yellow result", yellow_result)
     cv2.waitKey()
-    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
