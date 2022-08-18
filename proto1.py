@@ -93,11 +93,28 @@ def main(img):
     yellow_mask = cv2.inRange(hsv, hsv_color_ranges['yellow']['lower'],
                               hsv_color_ranges['yellow']['upper'])
     yellow_mask = cv2.morphologyEx(yellow_mask,
-                                   cv2.MORPH_OPEN,
-                                   morphic_kernel,
-                                   iterations=5)
-    yellow_result = cv2.bitwise_and(img, img, mask=yellow_mask)
+                                 cv2.MORPH_OPEN,
+                                 morphic_kernel,
+                                 iterations=5)
+    yellow_mask = cv2.morphologyEx(yellow_mask,
+                                 cv2.MORPH_CLOSE,
+                                 joining_kernel,
+                                 iterations=3)
+    yellow_mask = cv2.morphologyEx(yellow_mask,
+                                 cv2.MORPH_CLOSE,
+                                 polishing_kernel,
+                                 iterations=6)
+    contours, _ = cv2.findContours(yellow_mask, cv2.RETR_LIST,
+                                   cv2.CHAIN_APPROX_SIMPLE)
 
+    triangles = []
+    for cnt in contours:
+        cnt_len = cv2.arcLength(cnt, True)
+        cnt = cv2.approxPolyDP(cnt, 0.08 * cnt_len, True)
+        if len(cnt) == 3 and cv2.contourArea(cnt) > 500:
+            triangles.append(cnt)
+    yellow_result = cv2.bitwise_and(img, img, mask=yellow_mask)
+    yellow_result = cv2.drawContours(yellow_result, triangles, -1, (0, 250, 0), 10)
     # resize to a quarter of a screen
     correction_factor = 1.
 
