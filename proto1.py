@@ -87,8 +87,13 @@ def main(img):
         if len(cnt) == 3 and cv2.contourArea(cnt) > 500:
             triangles.append(cnt)
 
+    bounding_boxes = [cv2.boundingRect(triangle) for triangle in triangles]
     blue_result = cv2.bitwise_and(img, img, mask=blue_mask)
-    blue_result = cv2.drawContours(blue_result, triangles, -1, (0, 250, 0), 10)
+    for box in bounding_boxes:
+        blue_result = cv2.rectangle(blue_result, box, color=(0, 250, 0), thickness= 10)
+    
+    #blue_result = cv2.drawContours(blue_result, bounding_boxes, -1, (0, 250, 0), 10)
+    
 
     yellow_mask = cv2.inRange(hsv, hsv_color_ranges['yellow']['lower'],
                               hsv_color_ranges['yellow']['upper'])
@@ -113,8 +118,13 @@ def main(img):
         cnt = cv2.approxPolyDP(cnt, 0.08 * cnt_len, True)
         if len(cnt) == 3 and cv2.contourArea(cnt) > 500:
             triangles.append(cnt)
+    
+    bounding_boxes = [cv2.boundingRect(triangle) for triangle in triangles]
     yellow_result = cv2.bitwise_and(img, img, mask=yellow_mask)
-    yellow_result = cv2.drawContours(yellow_result, triangles, -1, (0, 250, 0), 10)
+    for box in bounding_boxes:
+        yellow_result = cv2.rectangle(yellow_result, box, color=(0, 250, 0), thickness= 10)
+    
+    #yellow_result = cv2.drawContours(yellow_result, triangles, -1, (0, 250, 0), 10)
     # resize to a quarter of a screen
     correction_factor = 1.
 
