@@ -143,7 +143,7 @@ def main(img):
 if __name__ == "__main__":
     Tk().withdraw()
     paths = askopenfilenames(title="Select file",
-                             initialdir="./fsoco_segmentation_train/")
+                             initialdir="./images/")
     imgs = []
     for path in paths:
         imgs.append(cv2.imread(path))
