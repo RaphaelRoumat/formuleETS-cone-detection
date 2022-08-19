@@ -58,6 +58,9 @@ def main(img):
     start_point = (width - 1300, height - 350)
     end_point = (width - 1, height - 1)
     img = cv2.rectangle(img, start_point, end_point, (0, 0, 255), -1)
+    
+    img = cv2.medianBlur(img, 5)
+
 
     # conversion to HSV color space to prepare for color thresholding
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
