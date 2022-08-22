@@ -50,11 +50,6 @@ def main(img):
     height = img.shape[0]
     width = img.shape[1]
 
-    img = img[150:height - 150, 150:width - 150]
-
-    height -= 150
-    width -= 150
-
     start_point = (width - 1300, height - 350)
     end_point = (width - 1, height - 1)
     img = cv2.rectangle(img, start_point, end_point, (0, 0, 255), -1)
